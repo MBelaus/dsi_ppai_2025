@@ -12,7 +12,7 @@ namespace PPAI2025.AccesoDatos
 {
     public class AD_TipoDato
     {
-        public static TipoDeDato agregarTipoDato(int idTipo)
+        public static TipoDeDato AgregarTipoDato(string denominacion, string unidadDeMedida)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
@@ -20,9 +20,10 @@ namespace PPAI2025.AccesoDatos
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM tipo_de_dato WHERE id = @idTipo";
+                string consulta = "SELECT * FROM tipo_de_dato WHERE denominacion = @denominacion AND nombre_unidad_medida = @unidadDeMedida";
 
-                cmd.Parameters.AddWithValue("@idTipo", idTipo);
+                cmd.Parameters.AddWithValue("@denominacion", denominacion);
+                cmd.Parameters.AddWithValue("@unidadDeMedida", unidadDeMedida);
                 cmd.CommandText = consulta;
                 cn.Open();
                 cmd.Connection = cn;
@@ -34,12 +35,12 @@ namespace PPAI2025.AccesoDatos
                 if (tabla.Rows.Count > 0)
                 {
                     DataRow fila = tabla.Rows[0];
-                    listaResultados = new TipoDeDato();
-
-                    listaResultados.Id = Convert.ToInt32(fila["id"]);
-                    listaResultados.NombreUnidadMedida = fila["nombre_unidad_medida"].ToString();
-                    listaResultados.Denominacion = fila["denominacion"].ToString();
-                    listaResultados.ValorUmbral = Convert.ToSingle(fila["valor_umbral"]);
+                    listaResultados = new TipoDeDato
+                    {
+                        NombreUnidadMedida = fila["nombre_unidad_medida"].ToString(),
+                        Denominacion = fila["denominacion"].ToString(),
+                        ValorUmbral = Convert.ToSingle(fila["valor_umbral"])
+                    };
                 }
 
 

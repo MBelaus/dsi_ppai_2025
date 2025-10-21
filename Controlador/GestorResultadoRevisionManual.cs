@@ -17,6 +17,7 @@ namespace PPAI2025.Controlador
         private PantResultadoRevisionManual pantalla;
         private List<EventoSismico> listES;
         private List<EventoSismico> listESAD;
+        private List<Sismografo> listSismografos;
         private EventoSismico esSelec;
         private Estado esBloqRevi;
         private Estado esRechazado;
@@ -24,14 +25,15 @@ namespace PPAI2025.Controlador
         private Estado esRevisionExperto;
         private DateTime fechaHoraActual;
         private dynamic seriesTemporales;
-        private Usuario sesionActual;
+        private Sesion sesionActual;
         private List<Estado> estados;
         private Estado estadoEnRevision;
         private List<CambioEstado> listCambiosEstados;
 
-        public GestorResultadoRevisionManual(PantResultadoRevisionManual pantalla) 
+        public GestorResultadoRevisionManual(PantResultadoRevisionManual pantalla, Sesion sesion) 
         {
             this.pantalla = pantalla;
+            this.sesionActual = sesion;
         }
 
         public List<EventoSismico> opResultadoRevisionManual()
@@ -46,13 +48,14 @@ namespace PPAI2025.Controlador
         {
             this.estados = AD_Estado.BuscarEstados();
             this.listES = AD_EventoSismico.BuscarTodosEventosSismicos();
+            this.listSismografos = AD_Sismografo.BuscarTodosSismografos();
         }
 
         private (List<EventoSismico>, List<CambioEstado> ) buscaEventosAutodetectados()
         {
             List<EventoSismico> eventosAutodetectadosNoRevisados = new List<EventoSismico>();
             List<CambioEstado> ultimosCambiosEstados = new List<CambioEstado>();
-            foreach (EventoSismico evento in listES)
+            foreach (EventoSismico evento in listES)    
             {
 
                 if (evento.esEventoNoRevisado() != null)
@@ -85,8 +88,8 @@ namespace PPAI2025.Controlador
             esSelec = eventoSeleccionado;
             esBloqRevi = buscarEstadoBloqueadoEnRevision();
             fechaHoraActual = getFechaHoraActual();
-            this.sesionActual = buscarUsuarioLogueado();
-            actualizarUltimoEstado(esSelec,listCambiosEstados,fechaHoraActual, esBloqRevi, this.sesionActual);
+            Empleado responsableInspeccion = buscarUsuarioLogueado();
+            actualizarUltimoEstado(esSelec,listCambiosEstados,fechaHoraActual, esBloqRevi, responsableInspeccion);
             buscarDatosSismicosEventoSeleccionado(esSelec);
             habilitarOpcionVisualizarMapa();
             permitirModificacionDatos();
@@ -124,8 +127,8 @@ namespace PPAI2025.Controlador
             fechaHoraActual = getFechaHoraActual();
             esRechazado = buscarEstadoRechazado();
             
-            //usuario = buscarUsuarioLogueado();
-            actualizarUltimoEstado(esSelec, listCambiosEstados, fechaHoraActual, esRechazado, this.sesionActual);
+            Empleado responsableInspeccion = buscarUsuarioLogueado();
+            actualizarUltimoEstado(esSelec, listCambiosEstados, fechaHoraActual, esRechazado, responsableInspeccion);
             //FIN CU
             finCU();
 
@@ -137,8 +140,8 @@ namespace PPAI2025.Controlador
             fechaHoraActual = getFechaHoraActual();
             esConfirmado = buscarEstadoConfirmado();
 
-            //usuario = buscarUsuarioLogueado();
-            actualizarUltimoEstado(esSelec, listCambiosEstados, fechaHoraActual, esConfirmado, this.sesionActual);
+            Empleado responsableInspeccion = buscarUsuarioLogueado();
+            actualizarUltimoEstado(esSelec, listCambiosEstados, fechaHoraActual, esConfirmado, responsableInspeccion);
             finCU();
             
 
@@ -148,8 +151,8 @@ namespace PPAI2025.Controlador
             fechaHoraActual = getFechaHoraActual();
             esRevisionExperto = buscarEstadoRevisionExperto();
 
-            //usuario = buscarUsuarioLogueado();
-            actualizarUltimoEstado(esSelec, listCambiosEstados, fechaHoraActual, esRevisionExperto, this.sesionActual);
+            Empleado responsableInspeccion = buscarUsuarioLogueado();
+            actualizarUltimoEstado(esSelec, listCambiosEstados, fechaHoraActual, esRevisionExperto, responsableInspeccion);
             finCU();
 
         }
@@ -173,23 +176,23 @@ namespace PPAI2025.Controlador
             return DateTime.Now;
         }
         
-        public Usuario buscarUsuarioLogueado()
+        public Empleado buscarUsuarioLogueado()
         {
-            Usuario usuarioActual = AppSession.SesionActual.conocerUsuario();
-            return usuarioActual;
+            Usuario usuarioLogueado = sesionActual.conocerUsuario();
+            Empleado responsableInspeccion = usuarioLogueado.getRILogueado();
+            return responsableInspeccion;
+
         }
         
-        public void actualizarUltimoEstado(EventoSismico eventoSeleccionado,List<CambioEstado> listUltimos, DateTime fechaHoraActual, Estado estadoAsignar, Usuario usuarioActual)
+        public void actualizarUltimoEstado(EventoSismico eventoSeleccionado,List<CambioEstado> listUltimos, DateTime fechaHoraActual, Estado estadoAsignar, Empleado responsableInspeccion)
         {
             // MessageBox.Show("Usuario " + usuarioActual.ToString());
-            foreach (CambioEstado e in listUltimos)
-            {
-                if(e.IdEvento == eventoSeleccionado.Id)
+            CambioEstado ultimoCEDelEvento = eventoSeleccionado.esEventoNoRevisado();
+
+            if(ultimoCEDelEvento != null)
                 {
-                    eventoSeleccionado.actualizarUltimoEstado(listUltimos, fechaHoraActual, estadoAsignar, usuarioActual);
+                    eventoSeleccionado.actualizarUltimoEstado(listUltimos, fechaHoraActual, estadoAsignar, responsableInspeccion);
                 }
-                
-            }
 
         }
 
@@ -197,7 +200,7 @@ namespace PPAI2025.Controlador
         {
             (string alcance, string clasificacion, string origen) = eventoSeleccionado.buscarDatosSismo();
             //this.seriesTemporales = eventoSeleccionado.buscarSeriesTemporales();
-            this.seriesTemporales = eventoSeleccionado.buscarYClasificarSeriesTemporales();
+            this.seriesTemporales = eventoSeleccionado.buscarYClasificarSeriesTemporales(listSismografos);
             this.pantalla.CargarDatosEnTreeView(this.seriesTemporales, alcance, clasificacion, origen);
             llamarCUGenerarSismograma();
             habilitarOpcionVisualizarMapa();

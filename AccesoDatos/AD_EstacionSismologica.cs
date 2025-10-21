@@ -12,7 +12,7 @@ namespace PPAI2025.AccesoDatos
 {
     public class AD_EstacionSismologica
     {
-        public static EstacionSismologica agregarEstacion(int idEstacion)
+        public static EstacionSismologica AgregarEstacion(int codigoEstacion)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
@@ -20,9 +20,9 @@ namespace PPAI2025.AccesoDatos
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM estacion_sismologica WHERE id_codigo_estacion = @idEstacion";
+                string consulta = "SELECT * FROM estacion_sismologica WHERE codigo_estacion = @codigoEstacion";
 
-                cmd.Parameters.AddWithValue("@idEstacion", idEstacion);
+                cmd.Parameters.AddWithValue("@codigoEstacion", codigoEstacion);
                 cmd.CommandText = consulta;
                 cn.Open();
                 cmd.Connection = cn;
@@ -34,15 +34,16 @@ namespace PPAI2025.AccesoDatos
                 if (tabla.Rows.Count > 0)
                 {
                     DataRow fila = tabla.Rows[0];
-                    listaResultados = new EstacionSismologica();
-
-                    listaResultados.IdCodigoEstacion = Convert.ToInt32(fila["id_codigo_estacion"]);
-                    listaResultados.DocumentoCertificacionAdq = fila["documento_certificado"].ToString();
-                    listaResultados.FechaSolicitudCertificacion = Convert.ToDateTime(fila["fecha_solicitud_certificado"]);
-                    listaResultados.Longitud = Convert.ToSingle(fila["longitud"]);
-                    listaResultados.Latitud = Convert.ToSingle(fila["latitud"]);
-                    listaResultados.Nombre = fila["nombre"].ToString();
-                    listaResultados.NumeroCertificadoAdquisicion = Convert.ToInt32(fila["numero_certificado_adquisicion"]);
+                    listaResultados = new EstacionSismologica
+                    {
+                        CodigoEstacion = Convert.ToInt32(fila["codigo_estacion"]),
+                        DocumentoCertificacionAdq = fila["documento_certificado"].ToString(),
+                        FechaSolicitudCertificacion = Convert.ToDateTime(fila["fecha_solicitud_certificado"]),
+                        Longitud = Convert.ToSingle(fila["longitud"]),
+                        Latitud = Convert.ToSingle(fila["latitud"]),
+                        Nombre = fila["nombre"].ToString(),
+                        NumeroCertificadoAdquisicion = Convert.ToInt32(fila["numero_certificado_adquisicion"])
+                    };
                 }
 
 

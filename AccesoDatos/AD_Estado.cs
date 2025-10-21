@@ -35,11 +35,11 @@ namespace PPAI2025.AccesoDatos
 
                 foreach (DataRow fila in tabla.Rows)
                 {
-                    Estado nuevoEstado = new Estado();
-
-                    nuevoEstado.Id = Convert.ToInt32(fila["id"]); 
-                    nuevoEstado.Nombre = fila["nombre"].ToString(); 
-                    nuevoEstado.Ambito = fila["ambito"].ToString();
+                    Estado nuevoEstado = new Estado
+                    {
+                        Nombre = fila["nombre"].ToString(),
+                        Ambito = fila["ambito"].ToString()
+                    };
 
                     listaResultados.Add(nuevoEstado); 
                 }
@@ -62,17 +62,18 @@ namespace PPAI2025.AccesoDatos
 
         }
 
-        public static Estado agregarEstado(int idEstado)
+        public static Estado AgregarEstado(string ambitoEstado, string nombreEstado)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
-            Estado listaResultados = new Estado();
+            Estado listaResultados = null;
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM estado WHERE id = @idEstado";
+                string consulta = "SELECT * FROM estado WHERE ambito = @ambitoEstado AND nombre = @nombreEstado";
 
-                cmd.Parameters.AddWithValue("@idEstado", idEstado);
+                cmd.Parameters.AddWithValue("@ambitoEstado", ambitoEstado);
+                cmd.Parameters.AddWithValue("@nombreEstado", nombreEstado);
                 cmd.CommandText = consulta;
                 cn.Open();
                 cmd.Connection = cn;
@@ -85,9 +86,11 @@ namespace PPAI2025.AccesoDatos
                 {
                     DataRow fila = tabla.Rows[0];
 
-                    listaResultados.Id = Convert.ToInt32(fila["id"]);
-                    listaResultados.Nombre = fila["nombre"].ToString();
-                    listaResultados.Ambito = fila["ambito"].ToString();
+                    listaResultados = new Estado
+                    {
+                        Nombre = fila["nombre"].ToString(),
+                        Ambito = fila["ambito"].ToString()
+                    };
                 }
 
 

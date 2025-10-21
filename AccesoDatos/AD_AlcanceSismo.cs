@@ -12,7 +12,7 @@ namespace PPAI2025.AccesoDatos
 {
     public class AD_AlcanceSismo
     {
-        public static AlcanceSismo agregarAlcance(int idAlcance)
+        public static AlcanceSismo AgregarAlcance(string nombreAlcance)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
@@ -20,9 +20,9 @@ namespace PPAI2025.AccesoDatos
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM alcance_sismo WHERE id = @idAlcance";
+                string consulta = "SELECT * FROM alcance_sismo WHERE nombre = @nombreAlcance";
 
-                cmd.Parameters.AddWithValue("@idAlcance", idAlcance);
+                cmd.Parameters.AddWithValue("@nombreAlcance", nombreAlcance);
                 cmd.CommandText = consulta;
                 cn.Open();
                 cmd.Connection = cn;
@@ -34,11 +34,11 @@ namespace PPAI2025.AccesoDatos
                 if (tabla.Rows.Count > 0)
                 {
                     DataRow fila = tabla.Rows[0];
-                    listaResultados = new AlcanceSismo();
-
-                    listaResultados.Id = Convert.ToInt32(fila["id"]);
-                    listaResultados.Nombre = fila["nombre"].ToString();
-                    listaResultados.Descripcion = fila["descripcion"].ToString();
+                    listaResultados = new AlcanceSismo
+                    {
+                        Nombre = fila["nombre"].ToString(),
+                        Descripcion = fila["descripcion"].ToString()
+                    };
                 }
 
 

@@ -82,6 +82,7 @@
     <Compile Include="AccesoDatos\AD_CambioEstado.cs" />
     <Compile Include="AccesoDatos\AD_ClasificacionSismo.cs" />
     <Compile Include="AccesoDatos\AD_DetalleMuestraSismica.cs" />
+    <Compile Include="AccesoDatos\AD_Empleado.cs" />
     <Compile Include="AccesoDatos\AD_Estado.cs" />
     <Compile Include="AccesoDatos\AD_EventoSismico.cs" />
     <Compile Include="AccesoDatos\AD_MagnitudSismo.cs" />
@@ -91,12 +92,15 @@
     <Compile Include="AccesoDatos\AD_EstacionSismologica.cs" />
     <Compile Include="AccesoDatos\AD_Sismografo.cs" />
     <Compile Include="AccesoDatos\AD_TipoDato.cs" />
+    <Compile Include="AccesoDatos\AD_Usuario.cs" />
     <Compile Include="AccesoDatos\AppSession.cs" />
+    <Compile Include="Controlador\GestorInicioSesion.cs" />
     <Compile Include="Controlador\GestorResultadoRevisionManual.cs" />
     <Compile Include="Entidades\AlcanceSismo.cs" />
     <Compile Include="Entidades\CambioEstado.cs" />
     <Compile Include="Entidades\ClasificacionSismo.cs" />
     <Compile Include="Entidades\DetalleMuestraSismica.cs" />
+    <Compile Include="Entidades\Empleado.cs" />
     <Compile Include="Entidades\EstacionSismologica.cs" />
     <Compile Include="Entidades\Estado.cs" />
     <Compile Include="Entidades\EventoSismico.cs" />
@@ -108,11 +112,11 @@
     <Compile Include="Entidades\Sismografo.cs" />
     <Compile Include="Entidades\TipoDeDato.cs" />
     <Compile Include="Entidades\Usuario.cs" />
-    <Compile Include="Interfaz\Login1.cs">
+    <Compile Include="Interfaz\PantInicioSesion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Interfaz\Login1.Designer.cs">
-      <DependentUpon>Login1.cs</DependentUpon>
+    <Compile Include="Interfaz\PantInicioSesion.Designer.cs">
+      <DependentUpon>PantInicioSesion.cs</DependentUpon>
     </Compile>
     <Compile Include="Interfaz\PantResultadoRevisionManual.cs">
       <SubType>Form</SubType>
@@ -122,8 +126,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Interfaz\Login1.resx">
-      <DependentUpon>Login1.cs</DependentUpon>
+    <EmbeddedResource Include="Interfaz\PantInicioSesion.resx">
+      <DependentUpon>PantInicioSesion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Interfaz\PantResultadoRevisionManual.resx">
       <DependentUpon>PantResultadoRevisionManual.cs</DependentUpon>

@@ -101,7 +101,6 @@ E:\Projects\DSI\PPAI2025\bin\Debug\System.Threading.Tasks.Extensions.xml
 E:\Projects\DSI\PPAI2025\bin\Debug\System.ValueTuple.xml
 E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.csproj.AssemblyReference.cache
 E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.exe.config
-E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.Login1.resources
 E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.Interfaz.PantResultadoRevisionManual.resources
 E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.Properties.Resources.resources
 E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.csproj.GenerateResource.cache
@@ -109,3 +108,4 @@ E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.csproj.CoreCompileInputs.cache
 E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.csproj.Up2Date
 E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.exe
 E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.pdb
+E:\Projects\DSI\PPAI2025\obj\Debug\PPAI2025.PantInicioSesion.resources

@@ -8,40 +8,31 @@ namespace PPAI2025.Entidades
 {
     public class Sesion
     {
-        public Usuario UsuarioActual { get; private set; }
+        private Usuario usuario;
+        private DateTime fechaHora;
 
-        public Sesion()
+        public Usuario UsuarioActual { get => usuario; set => usuario = value; }
+        public DateTime FechaHora { get => fechaHora; set => fechaHora = value; }
+
+        public Sesion() 
         {
-            UsuarioActual = null; 
         }
 
-        public bool EstablecerUsuario(Usuario usuario) 
+        public Sesion(Usuario usuario)
         {
-            if (usuario != null)
-            {
-                UsuarioActual = usuario;
-                Console.WriteLine($"[Sesion] Usuario '{usuario.NombreUsuario}' establecido en esta sesión.");
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("[Sesion] Intento de establecer un usuario nulo en la sesión.");
-                return false;
-            }
+            this.usuario = usuario;
+            this.fechaHora = DateTime.Now;
         }
 
-        public Usuario conocerUsuario() 
+        public void EstablecerUsuario(Usuario usuario)
         {
-            if (UsuarioActual != null)
-            {
-                Console.WriteLine($"[Sesion] La sesión actual pertenece a: {UsuarioActual.getASLogueado()}");
-                return UsuarioActual;
-            }
-            else
-            {
-                Console.WriteLine("[Sesion] No hay ningún usuario activo en esta sesión.");
-                return null;
-            }
+            this.usuario = usuario;
+            this.fechaHora = DateTime.Now;
+        }
+
+        public Usuario conocerUsuario()
+        {
+            return usuario;
         }
     }
 }

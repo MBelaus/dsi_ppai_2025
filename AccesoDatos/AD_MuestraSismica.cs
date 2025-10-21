@@ -13,7 +13,7 @@ namespace PPAI2025.AccesoDatos
 {
     public class AD_MuestraSismica
     {
-        public static List<MuestraSismica> agregarMuestras(int idSerieTemporal)
+        public static List<MuestraSismica> AgregarMuestras(DateTime fechaHoraRegistroSerie, DateTime fechaHoraInicioRegistroSerie)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
@@ -21,9 +21,14 @@ namespace PPAI2025.AccesoDatos
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM muestra_sismica WHERE id_serie_temporal = @idSerieTemporal";
+                string consulta = "SELECT m.* FROM muestra_sismica m " +
+                    "INNER JOIN serie_temporal s ON m.fecha_hora_registro_serie = s.fecha_hora_registro " +
+                    "AND m.fecha_hora_inicio_muestra_serie = s.fecha_hora_inicio_muestras " +
+                    "WHERE m.fecha_hora_registro_serie = @fechaHoraRegistroSerie " +
+                    "AND m.fecha_hora_inicio_muestra_serie = @fechaHoraInicioRegistroSerie ";
 
-                cmd.Parameters.AddWithValue("@idSerieTemporal", idSerieTemporal);
+                cmd.Parameters.AddWithValue("@fechaHoraRegistroSerie", fechaHoraRegistroSerie);
+                cmd.Parameters.AddWithValue("@fechaHoraInicioRegistroSerie", fechaHoraInicioRegistroSerie);
                 cmd.CommandText = consulta;
                 cn.Open();
                 cmd.Connection = cn;
@@ -36,11 +41,10 @@ namespace PPAI2025.AccesoDatos
                 {
                     MuestraSismica nuevaMuestra = new MuestraSismica();
 
-                    nuevaMuestra.Id = Convert.ToInt32(fila["id"]);
-                    nuevaMuestra.FechaHoraMuestra = Convert.ToDateTime(fila["fecha_hora_muestra"]);
+                    DateTime fechaHoraMuestra = Convert.ToDateTime(fila["fecha_hora_muestra"]);
+                    nuevaMuestra.FechaHoraMuestra = fechaHoraMuestra;
 
-                    int idMuestra = Convert.ToInt32(fila["id"]);
-                    nuevaMuestra.DetalleMuestraSismica = obtenerDetalleMuestra(idMuestra);
+                    nuevaMuestra.DetalleMuestraSismica = ObtenerDetalleMuestra(fechaHoraMuestra, fechaHoraRegistroSerie, fechaHoraInicioRegistroSerie);
 
                     listaResultados.Add(nuevaMuestra);
                 }
@@ -64,9 +68,9 @@ namespace PPAI2025.AccesoDatos
         }
 
 
-        private static List<DetalleMuestraSismica> obtenerDetalleMuestra(int idDetalle)
+        private static List<DetalleMuestraSismica> ObtenerDetalleMuestra(DateTime fechaHoraMuestra, DateTime fechaHoraRegistroSerie, DateTime fechaHoraInicioRegistroSerie)
         {
-            return AD_DetalleMuestraSismica.agregarDetalle(idDetalle);
+            return AD_DetalleMuestraSismica.AgregarDetalle(fechaHoraMuestra, fechaHoraRegistroSerie, fechaHoraInicioRegistroSerie);
         }
     }
 }

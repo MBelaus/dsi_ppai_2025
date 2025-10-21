@@ -8,17 +8,14 @@ namespace PPAI2025.Entidades
 {
     public class AlcanceSismo
     {
-        private int id;
         private string descripcion;
         private string nombre;
 
-        public int Id { get => id; set => id = value; }
         public string Descripcion { get => descripcion; set => descripcion = value; }
         public string Nombre { get => nombre; set => nombre = value; }
 
-        public AlcanceSismo(int id, string descripcion, string nombre)
+        public AlcanceSismo(string descripcion, string nombre)
         {
-            this.id = id;
             this.descripcion = descripcion;
             this.nombre = nombre;
         }
@@ -27,7 +24,7 @@ namespace PPAI2025.Entidades
         {
         }
 
-        public String getNombre()
+        public string getNombre()
         {
             return Nombre.ToString();
         }

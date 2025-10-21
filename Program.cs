@@ -17,8 +17,8 @@ namespace PPAI2025
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            AppSession.InicializarSesionAdmin();
-            Application.Run(new Login1());
+            //AppSession.InicializarSesionAdmin();
+            Application.Run(new PantInicioSesion());
         }
     }
 }

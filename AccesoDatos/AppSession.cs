@@ -9,18 +9,15 @@ namespace PPAI2025.AccesoDatos
 {
     public static class AppSession
     {
-        public static Sesion SesionActual { get; private set; } = new Sesion();
-
-        public static void InicializarSesionAdmin()
-        {
-            Usuario adminUsuario = new Usuario(999, "Admin"); 
-            SesionActual.EstablecerUsuario(adminUsuario); 
-        }
+        public static Sesion SesionActual { get; set; }
 
         public static Usuario GetUsuarioLogueado()
         {
-            return SesionActual.conocerUsuario();
+            if (SesionActual != null)
+            {
+                return SesionActual.conocerUsuario();
+            }
+            return null;
         }
-
     }
 }

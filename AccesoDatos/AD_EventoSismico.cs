@@ -36,32 +36,31 @@ namespace PPAI2025.AccesoDatos
                 {
                     EventoSismico nuevoEvento = new EventoSismico();
 
-                    nuevoEvento.Id = Convert.ToInt32(fila["id"]);
-                    nuevoEvento.FechaOcurrencia = Convert.ToDateTime(fila["fecha_hora_ocurrencia"]);
-                    nuevoEvento.FechaHoraFin = Convert.ToDateTime(fila["fecha_hora_fin"]);
+                    DateTime fechaHoraOcurrencia = Convert.ToDateTime(fila["fecha_hora_ocurrencia"]);
+                    nuevoEvento.FechaOcurrencia = fechaHoraOcurrencia;
+                    DateTime fechaHoraFin = Convert.ToDateTime(fila["fecha_hora_fin"]);
+                    nuevoEvento.FechaHoraFin = fechaHoraFin;
                     nuevoEvento.LatitudEpicentro = Convert.ToSingle(fila["latitud_epicentro"]);
-                    nuevoEvento.LongitudEpicentro = Convert.ToSingle(fila["longitud_epicentro"]);
                     nuevoEvento.LatitudHipocentro = Convert.ToSingle(fila["latitud_hipocentro"]);
+                    nuevoEvento.LongitudEpicentro = Convert.ToSingle(fila["longitud_epicentro"]);
                     nuevoEvento.LongitudHipocentro = Convert.ToSingle(fila["longitud_hipocentro"]);
                     nuevoEvento.ValorMagnitud = Convert.ToSingle(fila["valor_magnitud"]);
 
-                    int idEvento = Convert.ToInt32(fila["id"]);
+                    string nombreClasificacionSismo = Convert.ToString(fila["nombre_clasificacion_sismo"]);
+                    nuevoEvento.Clasificacion = ObtenerClasificacionSismo(nombreClasificacionSismo);
 
-                    int idClasificacion = Convert.ToInt32(fila["id_clasificacion_sismo"]);
-                    nuevoEvento.Clasificacion = obtenerClasificacionSismo(idClasificacion);
+                    string numeroMagnitudRichter = fila["numero_magnitud_richter"].ToString();
+                    nuevoEvento.Magnitud = ObtenerMagnitudSismo(numeroMagnitudRichter);
 
-                    int idMagnitud = Convert.ToInt32(fila["id_magnitud_richter"]);
-                    nuevoEvento.Magnitud = obtenerMagnitudSismo(idMagnitud);
+                    string nombreOrigenGeneracion = Convert.ToString(fila["nombre_origen_generacion"]);
+                    nuevoEvento.Origen = ObtenerOrigenSismo(nombreOrigenGeneracion);
 
-                    int idOrigen = Convert.ToInt32(fila["id_origen_generacion"]);
-                    nuevoEvento.Origen = obtenerOrigenSismo(idOrigen);
+                    string nombreAlcanceSismo = Convert.ToString(fila["nombre_alcance_sismo"]);
+                    nuevoEvento.Alcance = ObtenerAlcanceSismo(nombreAlcanceSismo);
 
-                    int idAlcance = Convert.ToInt32(fila["id_alcance_sismo"]);
-                    nuevoEvento.Alcance = obtenerAlcanceSismo(idAlcance);
+                    nuevoEvento.CambioEstado = ObtenerCambiosEstado(fechaHoraOcurrencia, fechaHoraFin);
 
-                    nuevoEvento.CambioEstado = obtenerCambiosEstado(idEvento);
-
-                    nuevoEvento.SerieTemporal = obtenerSeriesTemporales(idEvento);
+                    nuevoEvento.SerieTemporal = ObtenerSeriesTemporales(fechaHoraOcurrencia, fechaHoraFin);
 
                     listaResultados.Add(nuevoEvento);
                 }
@@ -83,34 +82,34 @@ namespace PPAI2025.AccesoDatos
 
         }
 
-        private static ClasificacionSismo obtenerClasificacionSismo(int idClasificacion)
+        private static ClasificacionSismo ObtenerClasificacionSismo(string nombreClasificacionSismo)
         {
-            return AD_ClasificacionSismo.agregarClasificacion(idClasificacion);
+            return AD_ClasificacionSismo.AgregarClasificacion(nombreClasificacionSismo);
         }
 
-        private static MagnitudRichter obtenerMagnitudSismo(int idMagnitud)
+        private static MagnitudRichter ObtenerMagnitudSismo(string numeroMagnitudRichter)
         {
-            return AD_MagnitudSismo.agregarMagnitud(idMagnitud);
+            return AD_MagnitudSismo.AgregarMagnitud(numeroMagnitudRichter);
         }
 
-        private static OrigenDeGeneracion obtenerOrigenSismo(int idOrigen)
+        private static OrigenDeGeneracion ObtenerOrigenSismo(string nombreOrigenGeneracion)
         {
-            return AD_OrigenSismo.agregarOrigen(idOrigen);
+            return AD_OrigenSismo.AgregarOrigen(nombreOrigenGeneracion);
         }
 
-        private static AlcanceSismo obtenerAlcanceSismo(int idAlcance)
+        private static AlcanceSismo ObtenerAlcanceSismo(string nombreAlcanceSismo)
         {
-            return AD_AlcanceSismo.agregarAlcance(idAlcance);
+            return AD_AlcanceSismo.AgregarAlcance(nombreAlcanceSismo);
         }
 
-        private static List<CambioEstado> obtenerCambiosEstado (int idEvento)
+        private static List<CambioEstado> ObtenerCambiosEstado (DateTime fechaHoraOcurrenciaEvento, DateTime fechaHoraFinEvento)
         {
-            return AD_CambioEstado.agregarCambiosEstado(idEvento);
+            return AD_CambioEstado.AgregarCambiosEstado(fechaHoraOcurrenciaEvento, fechaHoraFinEvento);
         }
 
-        private static List<SerieTemporal> obtenerSeriesTemporales(int idEvento)
+        private static List<SerieTemporal> ObtenerSeriesTemporales(DateTime fechaHoraOcurrenciaEvento, DateTime fechaHoraFinEvento)
         {
-            return AD_SerieTemporal.agregarSeries(idEvento);
+            return AD_SerieTemporal.AgregarSeries(fechaHoraOcurrenciaEvento, fechaHoraFinEvento);
         }
     }
 }

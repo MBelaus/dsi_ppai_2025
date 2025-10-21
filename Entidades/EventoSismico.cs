@@ -11,7 +11,6 @@ namespace PPAI2025.Entidades
 {
     public class EventoSismico
     {
-        private int id;
         private DateTime fechaHoraOcurrencia;
         private DateTime fechaHoraFin;
         private float latitudEpicentro;
@@ -26,7 +25,6 @@ namespace PPAI2025.Entidades
         private OrigenDeGeneracion origen;
         private AlcanceSismo alcance;
 
-        public int Id { get => id; set => id = value; }
         public DateTime FechaOcurrencia { get => fechaHoraOcurrencia; set => fechaHoraOcurrencia = value; }
         public DateTime FechaHoraFin { get => fechaHoraFin; set => fechaHoraFin = value; }
         public float LatitudEpicentro { get => latitudEpicentro; set => latitudEpicentro = value; }
@@ -41,10 +39,9 @@ namespace PPAI2025.Entidades
         public OrigenDeGeneracion Origen { get => origen; set => origen = value; }
         public AlcanceSismo Alcance { get => alcance; set => alcance = value; }
 
-        public EventoSismico(int id, DateTime fechaHoraOcurrencia, DateTime fechaHoraFin, float latitudEpicentro, float longitudEpicentro, float latitudHipocentro, float longitudHipocentro, float valorMagnitud,
+        public EventoSismico(DateTime fechaHoraOcurrencia, DateTime fechaHoraFin, float latitudEpicentro, float longitudEpicentro, float latitudHipocentro, float longitudHipocentro, float valorMagnitud,
             List<CambioEstado> cambioEstado, List<SerieTemporal> serieTemporal, ClasificacionSismo clasificacion, MagnitudRichter magnitudRichter, OrigenDeGeneracion origen, AlcanceSismo alcance)
         {
-            this.id = id;
             this.fechaHoraOcurrencia = fechaHoraOcurrencia;
             this.fechaHoraFin = fechaHoraFin;
             this.latitudEpicentro = latitudEpicentro;
@@ -90,31 +87,29 @@ namespace PPAI2025.Entidades
         }
 
 
-        public void actualizarUltimoEstado(List<CambioEstado> listUltimos, DateTime fechaHoraActual, Estado estado, Usuario usuarioActual)
+        public void actualizarUltimoEstado(List<CambioEstado> listUltimos, DateTime fechaHoraActual, Estado estado, Empleado responsableInspeccion)
         {
 
             //MessageBox.Show("Cantidad cambios estado: " + this.CambioEstado.Count.ToString());
 
             CambioEstado cambioEstadoDelEvento = listUltimos
-                    .FirstOrDefault(ce => ce.IdEvento == this.Id);
+                    .FirstOrDefault(ce => this.CambioEstado.Contains(ce));
 
             if (cambioEstadoDelEvento != null)
             {
                 cambioEstadoDelEvento.setFechaHoraFin(fechaHoraActual);
             }
-            crearNuevoCambioEstado(estado,usuarioActual);
+            crearNuevoCambioEstado(estado,responsableInspeccion);
         }
 
-        private void crearNuevoCambioEstado(Estado est, Usuario usuario)
+        private void crearNuevoCambioEstado(Estado est, Empleado responsableInspeccion)
         {
             CambioEstado nuevoCambio = new CambioEstado
             {
-                Id = 100,
                 FechaHoraFin = null,
                 FechaHoraInicio = DateTime.Now,
                 EstadoActual = est,
-                IdEvento = this.Id,
-                Usuario = usuario
+                ResponsableInspeccion = responsableInspeccion
             };
 
             MessageBox.Show("Nuevo cambio estado: " + nuevoCambio.EstadoActual.Nombre.ToString());
@@ -131,17 +126,31 @@ namespace PPAI2025.Entidades
             return (nombreAlcance, nombreClasificacion, nombreOrigen);
         }
 
-        public object buscarYClasificarSeriesTemporales()
+        public object buscarYClasificarSeriesTemporales(List<Sismografo> sismografos)
         {
+            var serieToStationMap = sismografos
+            .SelectMany(sismo => sismo.SeriesTemporales.Select(serie => new { Serie = serie, Station = sismo.EstacionSismologica }))
+            .ToDictionary(x => x.Serie, x => x.Station);
+
             var gruposPorEstacion = this.SerieTemporal
-            .Where(s => s.buscarEstacionSismologica() != null)
-            .GroupBy(s => s.buscarEstacionSismologica().Nombre)
+            .Where(s => serieToStationMap.ContainsKey(s) && serieToStationMap[s] != null)
+            .GroupBy(s => serieToStationMap[s].Nombre)
             .Select(g => new
-            {
+        {
                 nombreEstacion = g.Key,
                 seriesDeEstaEstacion = g.Select(s => s.getDatos()).ToList()
-            })
-            .ToList();
+        })
+        .ToList();
+
+            //var gruposPorEstacion = this.SerieTemporal
+            //.Where(s => s.buscarEstacionSismologica() != null)
+            //.GroupBy(s => s.buscarEstacionSismologica().Nombre)
+            //.Select(g => new
+            //{
+            //    nombreEstacion = g.Key,
+            //    seriesDeEstaEstacion = g.Select(s => s.getDatos()).ToList()
+            //})
+            //.ToList();
 
             var options = new JsonSerializerOptions
             {

@@ -10,19 +10,19 @@ using System.Collections.Generic;
 
 namespace PPAI2025.AccesoDatos
 {
-    public class AD_MagnitudSismo
+    public class AD_Empleado
     {
-        public static MagnitudRichter AgregarMagnitud(string numeroMagnitud)
+        public static Empleado AgregarEmpleado(string mailEmpleado)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
-            MagnitudRichter listaResultados = null;
+            Empleado listaResultados = null;
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM magnitud_richter WHERE numero = @numeroMagnitud";
+                string consulta = "SELECT * FROM empleado WHERE mail = @mailEmpleado";
 
-                cmd.Parameters.AddWithValue("@numeroMagnitud", numeroMagnitud);
+                cmd.Parameters.AddWithValue("@mailEmpleado", mailEmpleado);
                 cmd.CommandText = consulta;
                 cn.Open();
                 cmd.Connection = cn;
@@ -34,18 +34,20 @@ namespace PPAI2025.AccesoDatos
                 if (tabla.Rows.Count > 0)
                 {
                     DataRow fila = tabla.Rows[0];
-                    listaResultados = new MagnitudRichter
-                    {
-                        Numero = Convert.ToSingle(fila["numero"]),
-                        DescripcionMagnitud = fila["descripcion_magnitud"].ToString()
-                    };
+                    listaResultados = new Empleado();
+
+                    listaResultados.Apellido = fila["apellido"].ToString();
+                    listaResultados.Nombre = fila["nombre"].ToString();
+                    listaResultados.Mail = fila["mail"].ToString();
+                    listaResultados.Telefono = fila["telefono"].ToString();
+
                 }
 
 
             }
             catch (Exception ex)
             {
-                throw; 
+                throw;
             }
             finally
             {

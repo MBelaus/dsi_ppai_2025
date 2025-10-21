@@ -12,7 +12,7 @@ namespace PPAI2025.AccesoDatos
 {
     public class AD_OrigenSismo
     {
-        public static OrigenDeGeneracion agregarOrigen(int idOrigen)
+        public static OrigenDeGeneracion AgregarOrigen(string nombreOrigen)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
@@ -20,9 +20,9 @@ namespace PPAI2025.AccesoDatos
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM origen_generacion WHERE id = @idOrigen";
+                string consulta = "SELECT * FROM origen_generacion WHERE nombre = @nombreOrigen";
 
-                cmd.Parameters.AddWithValue("@idOrigen", idOrigen);
+                cmd.Parameters.AddWithValue("@nombreOrigen", nombreOrigen);
                 cmd.CommandText = consulta;
                 cn.Open();
                 cmd.Connection = cn;
@@ -34,11 +34,11 @@ namespace PPAI2025.AccesoDatos
                 if (tabla.Rows.Count > 0)
                 {
                     DataRow fila = tabla.Rows[0];
-                    listaResultados = new OrigenDeGeneracion();
-
-                    listaResultados.Id = Convert.ToInt32(fila["id"]);
-                    listaResultados.Descripcion = fila["descripcion"].ToString();
-                    listaResultados.Nombre = fila["nombre"].ToString();
+                    listaResultados = new OrigenDeGeneracion
+                    {
+                        Descripcion = fila["descripcion"].ToString(),
+                        Nombre = fila["nombre"].ToString()
+                    };
                 }
 
 

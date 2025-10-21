@@ -8,20 +8,19 @@ using System;
 using System.Windows.Forms;
 using System.Collections.Generic;
 
-
 namespace PPAI2025.AccesoDatos
 {
-    public class AD_Sismografo
+    public class AD_Usuario
     {
-        public static List<Sismografo> BuscarTodosSismografos()
+        public static List<Usuario> BuscarUsuarios()
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
-            List<Sismografo> listaResultados = null;
+            List<Usuario> listaResultados = null;
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM sismografo";
+                string consulta = "SELECT * FROM usuario";
 
                 cmd.CommandText = consulta;
                 cn.Open();
@@ -31,24 +30,20 @@ namespace PPAI2025.AccesoDatos
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(tabla);
 
-                listaResultados = new List<Sismografo>();
+                listaResultados = new List<Usuario>();
 
                 foreach (DataRow fila in tabla.Rows)
                 {
-                    Sismografo nuevoSismografo = new Sismografo();
+                    Usuario nuevoUsuario = new Usuario();
 
-                    nuevoSismografo.Id = Convert.ToInt32(fila["id_sismografo"]);
-                    nuevoSismografo.FechaAdquisicion = Convert.ToDateTime(fila["fecha_adquisicion"]);
-                    nuevoSismografo.NroSerie = fila["nro_serie"].ToString();
+                    nuevoUsuario.NombreUsuario = fila["nombre_usuario"].ToString();
+                    nuevoUsuario.Password = fila["password"].ToString();
 
-                    int codigoEstacion = Convert.ToInt32(fila["codigo_estacion_sismologica"]);
-                    nuevoSismografo.EstacionSismologica = ObtenerEstacionSismologica(codigoEstacion);
+                    string mailEmpleado= Convert.ToString(fila["mail_empleado"]);
+                    nuevoUsuario.Empleado = ObtenerEmpleados(mailEmpleado);
 
-                    nuevoSismografo.SeriesTemporales = AD_SerieTemporal.ObtenerSeriesTemporales(nuevoSismografo.Id);
-
-                    listaResultados.Add(nuevoSismografo);
+                    listaResultados.Add(nuevoUsuario);
                 }
-
             }
             catch (Exception ex)
             {
@@ -63,20 +58,20 @@ namespace PPAI2025.AccesoDatos
             }
 
             return listaResultados;
-
         }
 
-        public static Sismografo AgregarSismografo(int idSismografo)
+        public static Usuario ValidarCredenciales(string nombreUsuario, string password)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
-            Sismografo listaResultados = null;
+            Usuario listaResultados = null;
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM sismografo WHERE id_sismografo = @idSismografo";
+                string consulta = "SELECT * FROM usuario WHERE nombre_usuario = @nombreUsuario AND password = @password";
 
-                cmd.Parameters.AddWithValue("@idSismografo", idSismografo);
+                cmd.Parameters.AddWithValue("@nombreUsuario", nombreUsuario);
+                cmd.Parameters.AddWithValue("@password", password);
                 cmd.CommandText = consulta;
                 cn.Open();
                 cmd.Connection = cn;
@@ -85,18 +80,16 @@ namespace PPAI2025.AccesoDatos
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(tabla);
 
-                if(tabla.Rows.Count > 0)
+                if (tabla.Rows.Count > 0)
                 {
                     DataRow fila = tabla.Rows[0];
-                    listaResultados = new Sismografo
-                    {
-                        Id = Convert.ToInt32(fila["id_sismografo"]),
-                        FechaAdquisicion = Convert.ToDateTime(fila["fecha_adquisicion"]),
-                        NroSerie = fila["nro_serie"].ToString()
-                    };
+                    listaResultados = new Usuario();
 
-                    int codigoEstacion = Convert.ToInt32(fila["codigo_estacion_sismologica"]);
-                    listaResultados.EstacionSismologica = ObtenerEstacionSismologica(codigoEstacion);
+                    listaResultados.NombreUsuario = fila["nombre_usuario"].ToString();
+                    listaResultados.Password = fila["password"].ToString();
+
+                    string mailEmpleado = fila["mail_empleado"].ToString();
+                    listaResultados.Empleado = ObtenerEmpleados(mailEmpleado);
                 }
 
 
@@ -117,9 +110,9 @@ namespace PPAI2025.AccesoDatos
 
         }
 
-        private static EstacionSismologica ObtenerEstacionSismologica(int codigoEstacion)
+        public static Empleado ObtenerEmpleados(string mailEmpleado)
         {
-            return AD_EstacionSismologica.AgregarEstacion(codigoEstacion);
+            return AD_Empleado.AgregarEmpleado(mailEmpleado);
         }
     }
 }

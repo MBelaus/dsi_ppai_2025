@@ -8,23 +8,20 @@ namespace PPAI2025.Entidades
 {
     public class Estado
     {
-        private int id;
         private string nombreEstado;
         private string ambito;
         private bool esEstadoCancelado;
         private bool esEstadoRechazado;
         private bool esEstadoBloqueadoRevision;
 
-        public int Id { get => id; set => id = value; }
         public string Nombre { get => nombreEstado; set => nombreEstado = value; }
         public string Ambito { get => ambito; set => ambito = value; }
         public bool EsCancelado{ get => esEstadoCancelado; set => esEstadoCancelado = value; }
         public bool EsRechazado { get => esEstadoRechazado; set => esEstadoRechazado = value; }
         public bool EsBloqueadoEnRevision { get => esEstadoBloqueadoRevision; set => esEstadoBloqueadoRevision = value; }
 
-        public Estado(int id, string nombre, string ambito)///, bool esReservable, bool esCancelable, bool esBloqueadoEnRevision)
+        public Estado(string nombre, string ambito)///, bool esReservable, bool esCancelable, bool esBloqueadoEnRevision)
         {
-            this.id = id;
             this.nombreEstado = nombre;
             this.ambito = ambito;
             //this.esEstadoCancelado = esReservable;

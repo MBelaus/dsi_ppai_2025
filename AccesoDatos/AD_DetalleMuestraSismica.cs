@@ -12,7 +12,7 @@ namespace PPAI2025.AccesoDatos
 {
     public class AD_DetalleMuestraSismica
     {
-        public static List<DetalleMuestraSismica> agregarDetalle(int idMuestra)
+        public static List<DetalleMuestraSismica> AgregarDetalle(DateTime fechaHoraMuestra, DateTime fechaHoraRegistroSerie, DateTime fechaHoraInicioMuestraSerie)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);
@@ -20,9 +20,19 @@ namespace PPAI2025.AccesoDatos
             try
             {
                 SqlCommand cmd = new SqlCommand();
-                string consulta = "SELECT * FROM detalle_muestra_sismica WHERE id_muestra = @idMuestra";
+                string consulta = "SELECT dm.* FROM detalle_muestra_sismica dm " +
+                    "INNER JOIN tipo_de_dato td ON dm.denominacion_tipo_dato = td.denominacion " +
+                    "AND dm.nombre_unidad_medida_tipo_dato = td.nombre_unidad_medida " +
+                    "INNER JOIN muestra_sismica ms ON dm.fecha_hora_muestra_sismica = ms.fecha_hora_muestra " +
+                    "AND dm.fecha_hora_registro_serie_muestra_sismica = ms.fecha_hora_registro_serie " +
+                    "AND dm.fecha_hora_inicio_muestra_serie_detalle = ms.fecha_hora_inicio_muestra_serie " +
+                    "WHERE dm.fecha_hora_muestra_sismica = @fechaHoraMuestra " +
+                    "AND dm.fecha_hora_registro_serie_muestra_sismica = @fechaHoraRegistroSerie " +
+                    "AND dm.fecha_hora_inicio_muestra_serie_detalle = @fechaHoraInicioMuestraSerie ";
 
-                cmd.Parameters.AddWithValue("@idMuestra", idMuestra);
+                cmd.Parameters.AddWithValue("@fechaHoraMuestra", fechaHoraMuestra);
+                cmd.Parameters.AddWithValue("@fechaHoraRegistroSerie", fechaHoraRegistroSerie);
+                cmd.Parameters.AddWithValue("@fechaHoraInicioMuestraSerie", fechaHoraInicioMuestraSerie);
                 cmd.CommandText = consulta;
                 cn.Open();
                 cmd.Connection = cn;
@@ -34,12 +44,11 @@ namespace PPAI2025.AccesoDatos
                 foreach (DataRow fila in tabla.Rows)
                 {
                     DetalleMuestraSismica nuevoDetalle = new DetalleMuestraSismica();
-                    nuevoDetalle.Id = Convert.ToInt32(fila["id"]);
                     nuevoDetalle.Valor = Convert.ToSingle(fila["valor"]);
-                    
-                    int idTipo = Convert.ToInt32(fila["id_tipo_de_dato"]);
-                    nuevoDetalle.TipoDato = obtenerTipoDato(idTipo);
 
+                    string denominacionTipoDato = Convert.ToString(fila["denominacion_tipo_dato"]);
+                    string unidadDeMedidaTipoDato = Convert.ToString(fila["nombre_unidad_medida_tipo_dato"]);
+                    nuevoDetalle.TipoDato = ObtenerTipoDato(denominacionTipoDato, unidadDeMedidaTipoDato);
 
                     listaResultados.Add(nuevoDetalle);
                 }
@@ -62,9 +71,9 @@ namespace PPAI2025.AccesoDatos
 
         }
 
-        private static TipoDeDato obtenerTipoDato(int idTipo)
+        private static TipoDeDato ObtenerTipoDato(string denominacionTipoDato, string unidadDeMedidaTipoDato)
         {
-            return AD_TipoDato.agregarTipoDato(idTipo);
+            return AD_TipoDato.AgregarTipoDato(denominacionTipoDato, unidadDeMedidaTipoDato);
         }
     }
 }

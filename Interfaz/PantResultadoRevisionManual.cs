@@ -34,14 +34,14 @@ namespace PPAI2025.Interfaz
             
         }
 
-        public void regResultRevisionManual()
+        public void regResultRevisionManual(Sesion sesionActual)
         {
-            habilitarPantalla();
+            habilitarPantalla(sesionActual);
         }
 
-        public void habilitarPantalla()
+        public void habilitarPantalla(Sesion sesionActual)
         {
-            gestor = new GestorResultadoRevisionManual(this);
+            gestor = new GestorResultadoRevisionManual(this, sesionActual);
             PantResultadoRevisionManual ventana = new PantResultadoRevisionManual(gestor);
             listaEventos = gestor.opResultadoRevisionManual();
             ventana.mostrarDatosEventos(listaEventos);
@@ -65,7 +65,6 @@ namespace PPAI2025.Interfaz
             dataGridEventos.Columns["LongitudEpicentro"].HeaderText = "Longitud Epicentro";
             dataGridEventos.Columns["LongitudHipocentro"].HeaderText = "Longitud Hipocentro";
             
-            dataGridEventos.Columns["Id"].Visible = false;
             dataGridEventos.Columns["Alcance"].Visible = false;
             dataGridEventos.Columns["Clasificacion"].Visible = false;
             dataGridEventos.Columns["Origen"].Visible = false;

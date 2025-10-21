@@ -9,28 +9,22 @@ namespace PPAI2025.Entidades
 {
     public class CambioEstado
     {
-        private int id;
         private DateTime? fechaHoraFin;
         private DateTime? fechaHoraInicio;
         private Estado estado;
-        private int idEvento;
-        private Usuario usuario;
+        private Empleado responsableInspeccion;
 
-        public int Id { get => id; set => id = value; }
         public DateTime? FechaHoraFin { get => fechaHoraFin; set => fechaHoraFin = value; }
         public DateTime? FechaHoraInicio { get => fechaHoraInicio; set => fechaHoraInicio = value; }
         public Estado EstadoActual { get => estado; set => estado = value; }
-        public int IdEvento { get => idEvento; set => idEvento = value; }
-        public Usuario Usuario { get => usuario; set => usuario = value; }
+        public Empleado ResponsableInspeccion { get => responsableInspeccion; set => responsableInspeccion = value; }
 
-        public CambioEstado(int id, DateTime? fechaHoraInicio, DateTime? fechaHoraFin, Estado estado, int idEvento, Usuario responsable)
+        public CambioEstado(DateTime? fechaHoraInicio, DateTime? fechaHoraFin, Estado estado, Empleado responsableInspeccion)
         {
-            this.id = id;
             this.fechaHoraInicio = fechaHoraInicio;
             this.estado = estado;
             this.fechaHoraFin = fechaHoraFin;
-            this.idEvento = idEvento;
-            this.Usuario = responsable;
+            this.responsableInspeccion = responsableInspeccion;
         }
 
         public CambioEstado()
