@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PPAI2025.Controlador;
+using PPAI2025.DTOs;
 using PPAI2025.Entidades;
 
 namespace PPAI2025.Interfaz
@@ -16,7 +17,6 @@ namespace PPAI2025.Interfaz
     public partial class PantResultadoRevisionManual : Form
     {
         private GestorResultadoRevisionManual gestor;
-        private List<EventoSismico> listaEventos;
         private bool datosCargados = false;
 
         public PantResultadoRevisionManual(GestorResultadoRevisionManual gestor)
@@ -43,8 +43,8 @@ namespace PPAI2025.Interfaz
         {
             gestor = new GestorResultadoRevisionManual(this, sesionActual);
             PantResultadoRevisionManual ventana = new PantResultadoRevisionManual(gestor);
-            listaEventos = gestor.opResultadoRevisionManual();
-            ventana.mostrarDatosEventos(listaEventos);
+            List<EventoSismicoDTO> listaEventosDTO = gestor.opResultadoRevisionManual();
+            ventana.mostrarDatosEventos(listaEventosDTO);
             ventana.Show();
             solicitarSeleccionEvento();
         }
@@ -54,21 +54,16 @@ namespace PPAI2025.Interfaz
             MessageBox.Show("Seleccione un Evento de la grilla");
         }
 
-        public void mostrarDatosEventos(List<EventoSismico> eventos)
+        public void mostrarDatosEventos(List<EventoSismicoDTO> eventosDTO)
         {
             dataGridEventos.DataSource = null;
-            dataGridEventos.DataSource = eventos;
+            dataGridEventos.DataSource = eventosDTO;
 
             dataGridEventos.Columns["FechaOcurrencia"].HeaderText = "Fecha de Ocurrencia";
             dataGridEventos.Columns["LatitudEpicentro"].HeaderText = "Latitud Epicentro";
             dataGridEventos.Columns["LatitudHipocentro"].HeaderText = "Latitud Hipocentro";
             dataGridEventos.Columns["LongitudEpicentro"].HeaderText = "Longitud Epicentro";
             dataGridEventos.Columns["LongitudHipocentro"].HeaderText = "Longitud Hipocentro";
-            
-            dataGridEventos.Columns["Alcance"].Visible = false;
-            dataGridEventos.Columns["Clasificacion"].Visible = false;
-            dataGridEventos.Columns["Origen"].Visible = false;
-            dataGridEventos.Columns[9].Visible = false;
 
             dataGridEventos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridEventos.MultiSelect = false;
@@ -85,13 +80,15 @@ namespace PPAI2025.Interfaz
 
             int index = e.RowIndex;
 
-            DataGridViewRow filaSeleccionada = dataGridEventos.Rows[index];
+            gestor.tomarSeleccionEventoPorIndice(e.RowIndex);
 
-            EventoSismico eventoSeleccionado = filaSeleccionada.DataBoundItem as EventoSismico;
-            if (eventoSeleccionado != null)
-            {
-                gestor.tomarSeleccionEventoIngresado(eventoSeleccionado);
-            }
+            //DataGridViewRow filaSeleccionada = dataGridEventos.Rows[index];
+
+            //EventoSismico eventoSeleccionado = filaSeleccionada.DataBoundItem as EventoSismico;
+            //if (eventoSeleccionado != null)
+            //{
+            //    gestor.tomarSeleccionEventoIngresado(eventoSeleccionado);
+            //}
 
             btnSismograma.Enabled = true;
             btnConfirmar.Enabled = true;

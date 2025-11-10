@@ -63,21 +63,26 @@ namespace PPAI2025.Entidades
 
         public CambioEstado esEventoNoRevisado()
         {
-            CambioEstado cambioEstadoActual = this.CambioEstado
-                                            .FirstOrDefault(ce => ce.esEstadoActual());
+            CambioEstado cambioEstado = this.CambioEstado
+                                            .FirstOrDefault(ce => ce.esAutoDetectado());
+            if (cambioEstado != null) { 
+                CambioEstado cambioEstadoActual = this.CambioEstado
+                                                .FirstOrDefault(ce => ce.esEstadoActual());
 
-            if (cambioEstadoActual == null)
-            {
-                return null;
-            }
-            else
-            {
-                if (cambioEstadoActual.esNoRevisado() && this.Magnitud.esAutodetectado())
+                if (cambioEstadoActual == null)
                 {
-                    return cambioEstadoActual;
+                    return null;
                 }
-                return null;
+                else
+                {
+                    if (cambioEstadoActual.esNoRevisado())
+                    {
+                        return cambioEstadoActual;
+                    }
+                    return null;
+                }
             }
+            return null;
         }
 
         public EventoSismico getDatos()

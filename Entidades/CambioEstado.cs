@@ -52,5 +52,13 @@ namespace PPAI2025.Entidades
         {
             this.FechaHoraFin = fechaHoraActual;
         }
+
+        public bool esAutoDetectado()
+        {
+            bool estadoEsAmbitoEventoSismico = this.EstadoActual.esAmbitoEventoSismico();
+            bool estadoAutoDetectado = this.EstadoActual.esAutoDetectado();
+
+            return estadoAutoDetectado && estadoEsAmbitoEventoSismico;
+        }
     }
 }

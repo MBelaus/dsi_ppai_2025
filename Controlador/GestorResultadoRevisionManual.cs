@@ -1,4 +1,5 @@
 ﻿using PPAI2025.AccesoDatos;
+using PPAI2025.DTOs;
 using PPAI2025.Entidades;
 using PPAI2025.Interfaz;
 using System;
@@ -36,12 +37,19 @@ namespace PPAI2025.Controlador
             this.sesionActual = sesion;
         }
 
-        public List<EventoSismico> opResultadoRevisionManual()
+        public List<EventoSismicoDTO> opResultadoRevisionManual()
         {
             cargarAtributos();
             (listESAD, listCambiosEstados) = buscaEventosAutodetectados();
             listESAD = ordenarPorFechaYHoraOcurrencia();
-            return listESAD;
+
+            List<EventoSismicoDTO> listEventoSismicoDTOs = new List<EventoSismicoDTO>();
+            foreach(EventoSismico evento in listESAD)
+            {
+                listEventoSismicoDTOs.Add(MapearADTO(evento));
+            }
+
+            return listEventoSismicoDTOs;
         }
 
         private void cargarAtributos()
@@ -57,10 +65,10 @@ namespace PPAI2025.Controlador
             List<CambioEstado> ultimosCambiosEstados = new List<CambioEstado>();
             foreach (EventoSismico evento in listES)    
             {
-
-                if (evento.esEventoNoRevisado() != null)
+                CambioEstado cambioEstadoNoRevisado = evento.esEventoNoRevisado();
+                if (cambioEstadoNoRevisado != null)
                 {
-                    ultimosCambiosEstados.Add(evento.esEventoNoRevisado());
+                    ultimosCambiosEstados.Add(cambioEstadoNoRevisado);
                     eventosAutodetectadosNoRevisados.Add(evento);
                 }
             }
@@ -81,6 +89,19 @@ namespace PPAI2025.Controlador
             var eventosOrdenados = listESAD.OrderBy(e => e.FechaOcurrencia).ToList();
 
             return eventosOrdenados;
+        }
+
+        public void tomarSeleccionEventoPorIndice(int indiceSeleccionado)
+        {
+            if (indiceSeleccionado >= 0 && indiceSeleccionado < listESAD.Count)
+            {
+                EventoSismico eventoSeleccionado = listESAD[indiceSeleccionado];
+                tomarSeleccionEventoIngresado(eventoSeleccionado);
+            }
+            else
+            {
+                MessageBox.Show("Índice de evento seleccionado fuera de rango.");
+            }
         }
 
         public void tomarSeleccionEventoIngresado(EventoSismico eventoSeleccionado)
@@ -241,6 +262,17 @@ namespace PPAI2025.Controlador
             }
 
             return null;
+        }
+
+        private EventoSismicoDTO MapearADTO(EventoSismico evento)
+        {
+            return new EventoSismicoDTO(
+                evento.FechaOcurrencia,
+                evento.LatitudEpicentro,
+                evento.LongitudEpicentro,
+                evento.LatitudHipocentro,
+                evento.LongitudHipocentro,
+                evento.ValorMagnitud);
         }
 
         public void llamarCUGenerarSismograma()

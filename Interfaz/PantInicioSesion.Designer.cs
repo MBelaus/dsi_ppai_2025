@@ -49,7 +49,7 @@
             this.btnIniciarSesion.Location = new System.Drawing.Point(153, 447);
             this.btnIniciarSesion.Name = "btnIniciarSesion";
             this.btnIniciarSesion.Size = new System.Drawing.Size(304, 47);
-            this.btnIniciarSesion.TabIndex = 4;
+            this.btnIniciarSesion.TabIndex = 2;
             this.btnIniciarSesion.Text = "Iniciar Sesion";
             this.btnIniciarSesion.UseVisualStyleBackColor = false;
             this.btnIniciarSesion.Click += new System.EventHandler(this.btnIniciarSesion_Click);
@@ -61,9 +61,9 @@
             this.txtPassword.Location = new System.Drawing.Point(205, 343);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.Size = new System.Drawing.Size(198, 13);
-            this.txtPassword.TabIndex = 5;
+            this.txtPassword.TabIndex = 1;
             // 
-            // Login1
+            // PantInicioSesion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -72,7 +72,7 @@
             this.Controls.Add(this.txtPassword);
             this.Controls.Add(this.btnIniciarSesion);
             this.Controls.Add(this.txtNombreUsuario);
-            this.Name = "Login1";
+            this.Name = "PantInicioSesion";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.Login1_Load);

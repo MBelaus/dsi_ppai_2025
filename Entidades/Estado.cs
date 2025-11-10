@@ -60,5 +60,10 @@ namespace PPAI2025.Entidades
         {
             return this.Nombre.Equals("confirmado", StringComparison.OrdinalIgnoreCase);
         }
+
+        public bool esAutoDetectado()
+        {
+            return this.Nombre.Equals("auto detectado", StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

@@ -124,6 +124,7 @@
             // 
             // btnConfirmar
             // 
+            this.btnConfirmar.BackColor = System.Drawing.Color.LimeGreen;
             this.btnConfirmar.Enabled = false;
             this.btnConfirmar.Location = new System.Drawing.Point(675, 33);
             this.btnConfirmar.Margin = new System.Windows.Forms.Padding(2);
@@ -131,11 +132,12 @@
             this.btnConfirmar.Size = new System.Drawing.Size(110, 44);
             this.btnConfirmar.TabIndex = 1;
             this.btnConfirmar.Text = "Confirmar";
-            this.btnConfirmar.UseVisualStyleBackColor = true;
+            this.btnConfirmar.UseVisualStyleBackColor = false;
             this.btnConfirmar.Click += new System.EventHandler(this.btnConfirm_Click);
             // 
             // btnRechazar
             // 
+            this.btnRechazar.BackColor = System.Drawing.Color.IndianRed;
             this.btnRechazar.Enabled = false;
             this.btnRechazar.Location = new System.Drawing.Point(675, 81);
             this.btnRechazar.Margin = new System.Windows.Forms.Padding(2);
@@ -143,11 +145,12 @@
             this.btnRechazar.Size = new System.Drawing.Size(110, 44);
             this.btnRechazar.TabIndex = 2;
             this.btnRechazar.Text = "Rechazar";
-            this.btnRechazar.UseVisualStyleBackColor = true;
+            this.btnRechazar.UseVisualStyleBackColor = false;
             this.btnRechazar.Click += new System.EventHandler(this.tomarIngresoSeleccionAccion_Click);
             // 
             // btnRevisionExperto
             // 
+            this.btnRevisionExperto.BackColor = System.Drawing.Color.Yellow;
             this.btnRevisionExperto.Enabled = false;
             this.btnRevisionExperto.Location = new System.Drawing.Point(675, 129);
             this.btnRevisionExperto.Margin = new System.Windows.Forms.Padding(2);
@@ -155,7 +158,7 @@
             this.btnRevisionExperto.Size = new System.Drawing.Size(110, 44);
             this.btnRevisionExperto.TabIndex = 3;
             this.btnRevisionExperto.Text = "Solicitar Revision Experto";
-            this.btnRevisionExperto.UseVisualStyleBackColor = true;
+            this.btnRevisionExperto.UseVisualStyleBackColor = false;
             this.btnRevisionExperto.Click += new System.EventHandler(this.btnRevisionExperto_Click);
             // 
             // btnVisualizarMapa
@@ -205,7 +208,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(899, 195);
+            this.ClientSize = new System.Drawing.Size(899, 191);
             this.Controls.Add(this.lblEventos);
             this.Controls.Add(this.treeAgrupados);
             this.Controls.Add(this.btnSismograma);
@@ -215,6 +218,7 @@
             this.Controls.Add(this.btnConfirmar);
             this.Controls.Add(this.dataGridEventos);
             this.Name = "PantResultadoRevisionManual";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ResultadoRevisionManual";
             this.Load += new System.EventHandler(this.Principal_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridEventos)).EndInit();
