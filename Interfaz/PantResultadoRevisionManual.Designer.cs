@@ -48,7 +48,11 @@
             // 
             // dataGridEventos
             // 
+            this.dataGridEventos.AllowUserToAddRows = false;
             this.dataGridEventos.AllowUserToDeleteRows = false;
+            this.dataGridEventos.AllowUserToResizeColumns = false;
+            this.dataGridEventos.AllowUserToResizeRows = false;
+            this.dataGridEventos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.dataGridEventos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridEventos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.FechaOcurrencia,
@@ -62,7 +66,7 @@
             this.dataGridEventos.ReadOnly = true;
             this.dataGridEventos.RowHeadersWidth = 82;
             this.dataGridEventos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridEventos.Size = new System.Drawing.Size(663, 150);
+            this.dataGridEventos.Size = new System.Drawing.Size(721, 289);
             this.dataGridEventos.TabIndex = 0;
             this.dataGridEventos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tomarSeleccionEvento_CellContentClick);
             // 
@@ -73,6 +77,7 @@
             this.FechaOcurrencia.MinimumWidth = 10;
             this.FechaOcurrencia.Name = "FechaOcurrencia";
             this.FechaOcurrencia.ReadOnly = true;
+            this.FechaOcurrencia.Width = 121;
             // 
             // LatitudEpicentro
             // 
@@ -81,6 +86,7 @@
             this.LatitudEpicentro.MinimumWidth = 10;
             this.LatitudEpicentro.Name = "LatitudEpicentro";
             this.LatitudEpicentro.ReadOnly = true;
+            this.LatitudEpicentro.Width = 103;
             // 
             // LongitudEpicentro
             // 
@@ -89,6 +95,7 @@
             this.LongitudEpicentro.MinimumWidth = 10;
             this.LongitudEpicentro.Name = "LongitudEpicentro";
             this.LongitudEpicentro.ReadOnly = true;
+            this.LongitudEpicentro.Width = 111;
             // 
             // LatitudHipocentro
             // 
@@ -97,6 +104,7 @@
             this.LatitudHipocentro.MinimumWidth = 10;
             this.LatitudHipocentro.Name = "LatitudHipocentro";
             this.LatitudHipocentro.ReadOnly = true;
+            this.LatitudHipocentro.Width = 109;
             // 
             // LongitudHipocentro
             // 
@@ -105,6 +113,7 @@
             this.LongitudHipocentro.MinimumWidth = 10;
             this.LongitudHipocentro.Name = "LongitudHipocentro";
             this.LongitudHipocentro.ReadOnly = true;
+            this.LongitudHipocentro.Width = 117;
             // 
             // Magnitud
             // 
@@ -113,7 +122,7 @@
             this.Magnitud.MinimumWidth = 10;
             this.Magnitud.Name = "Magnitud";
             this.Magnitud.ReadOnly = true;
-            this.Magnitud.Width = 79;
+            this.Magnitud.Width = 76;
             // 
             // lblClickEvento
             // 
@@ -126,10 +135,10 @@
             // 
             this.btnConfirmar.BackColor = System.Drawing.Color.LimeGreen;
             this.btnConfirmar.Enabled = false;
-            this.btnConfirmar.Location = new System.Drawing.Point(675, 33);
+            this.btnConfirmar.Location = new System.Drawing.Point(733, 33);
             this.btnConfirmar.Margin = new System.Windows.Forms.Padding(2);
             this.btnConfirmar.Name = "btnConfirmar";
-            this.btnConfirmar.Size = new System.Drawing.Size(110, 44);
+            this.btnConfirmar.Size = new System.Drawing.Size(110, 60);
             this.btnConfirmar.TabIndex = 1;
             this.btnConfirmar.Text = "Confirmar";
             this.btnConfirmar.UseVisualStyleBackColor = false;
@@ -139,10 +148,10 @@
             // 
             this.btnRechazar.BackColor = System.Drawing.Color.IndianRed;
             this.btnRechazar.Enabled = false;
-            this.btnRechazar.Location = new System.Drawing.Point(675, 81);
+            this.btnRechazar.Location = new System.Drawing.Point(733, 97);
             this.btnRechazar.Margin = new System.Windows.Forms.Padding(2);
             this.btnRechazar.Name = "btnRechazar";
-            this.btnRechazar.Size = new System.Drawing.Size(110, 44);
+            this.btnRechazar.Size = new System.Drawing.Size(110, 60);
             this.btnRechazar.TabIndex = 2;
             this.btnRechazar.Text = "Rechazar";
             this.btnRechazar.UseVisualStyleBackColor = false;
@@ -152,10 +161,10 @@
             // 
             this.btnRevisionExperto.BackColor = System.Drawing.Color.Yellow;
             this.btnRevisionExperto.Enabled = false;
-            this.btnRevisionExperto.Location = new System.Drawing.Point(675, 129);
+            this.btnRevisionExperto.Location = new System.Drawing.Point(733, 161);
             this.btnRevisionExperto.Margin = new System.Windows.Forms.Padding(2);
             this.btnRevisionExperto.Name = "btnRevisionExperto";
-            this.btnRevisionExperto.Size = new System.Drawing.Size(110, 44);
+            this.btnRevisionExperto.Size = new System.Drawing.Size(110, 60);
             this.btnRevisionExperto.TabIndex = 3;
             this.btnRevisionExperto.Text = "Solicitar Revision Experto";
             this.btnRevisionExperto.UseVisualStyleBackColor = false;
@@ -164,10 +173,10 @@
             // btnVisualizarMapa
             // 
             this.btnVisualizarMapa.Enabled = false;
-            this.btnVisualizarMapa.Location = new System.Drawing.Point(789, 58);
+            this.btnVisualizarMapa.Location = new System.Drawing.Point(733, 229);
             this.btnVisualizarMapa.Margin = new System.Windows.Forms.Padding(2);
             this.btnVisualizarMapa.Name = "btnVisualizarMapa";
-            this.btnVisualizarMapa.Size = new System.Drawing.Size(103, 44);
+            this.btnVisualizarMapa.Size = new System.Drawing.Size(110, 44);
             this.btnVisualizarMapa.TabIndex = 4;
             this.btnVisualizarMapa.Text = "Visualizar Mapa";
             this.btnVisualizarMapa.UseVisualStyleBackColor = true;
@@ -176,10 +185,10 @@
             // btnSismograma
             // 
             this.btnSismograma.Enabled = false;
-            this.btnSismograma.Location = new System.Drawing.Point(789, 106);
+            this.btnSismograma.Location = new System.Drawing.Point(733, 277);
             this.btnSismograma.Margin = new System.Windows.Forms.Padding(2);
             this.btnSismograma.Name = "btnSismograma";
-            this.btnSismograma.Size = new System.Drawing.Size(103, 44);
+            this.btnSismograma.Size = new System.Drawing.Size(110, 45);
             this.btnSismograma.TabIndex = 5;
             this.btnSismograma.Text = "Generar Sismograma";
             this.btnSismograma.UseVisualStyleBackColor = true;
@@ -187,10 +196,10 @@
             // 
             // treeAgrupados
             // 
-            this.treeAgrupados.Location = new System.Drawing.Point(8, 203);
+            this.treeAgrupados.Location = new System.Drawing.Point(749, 416);
             this.treeAgrupados.Margin = new System.Windows.Forms.Padding(2);
             this.treeAgrupados.Name = "treeAgrupados";
-            this.treeAgrupados.Size = new System.Drawing.Size(665, 306);
+            this.treeAgrupados.Size = new System.Drawing.Size(143, 89);
             this.treeAgrupados.TabIndex = 6;
             this.treeAgrupados.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeAgrupados_AfterSelect);
             // 
@@ -208,7 +217,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(899, 191);
+            this.ClientSize = new System.Drawing.Size(859, 334);
             this.Controls.Add(this.lblEventos);
             this.Controls.Add(this.treeAgrupados);
             this.Controls.Add(this.btnSismograma);

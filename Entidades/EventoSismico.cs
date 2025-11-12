@@ -135,27 +135,19 @@ namespace PPAI2025.Entidades
         {
             var serieToStationMap = sismografos
             .SelectMany(sismo => sismo.SeriesTemporales.Select(serie => new { Serie = serie, Station = sismo.EstacionSismologica }))
-            .ToDictionary(x => x.Serie, x => x.Station);
+            .ToDictionary(
+            x => (x.Serie.FechaHoraRegistro, x.Serie.FechaHoraInicioRegistroMuestras), 
+            x => x.Station);
 
             var gruposPorEstacion = this.SerieTemporal
-            .Where(s => serieToStationMap.ContainsKey(s) && serieToStationMap[s] != null)
-            .GroupBy(s => serieToStationMap[s].Nombre)
+            .Where(s => serieToStationMap.ContainsKey((s.FechaHoraRegistro, s.FechaHoraInicioRegistroMuestras)) && serieToStationMap[(s.FechaHoraRegistro, s.FechaHoraInicioRegistroMuestras)] != null)
+            .GroupBy(s => serieToStationMap[(s.FechaHoraRegistro, s.FechaHoraInicioRegistroMuestras)].Nombre)
             .Select(g => new
         {
                 nombreEstacion = g.Key,
                 seriesDeEstaEstacion = g.Select(s => s.getDatos()).ToList()
         })
         .ToList();
-
-            //var gruposPorEstacion = this.SerieTemporal
-            //.Where(s => s.buscarEstacionSismologica() != null)
-            //.GroupBy(s => s.buscarEstacionSismologica().Nombre)
-            //.Select(g => new
-            //{
-            //    nombreEstacion = g.Key,
-            //    seriesDeEstaEstacion = g.Select(s => s.getDatos()).ToList()
-            //})
-            //.ToList();
 
             var options = new JsonSerializerOptions
             {

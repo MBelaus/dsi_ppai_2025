@@ -195,7 +195,7 @@ namespace PPAI2025.Interfaz
 
                             foreach (var detalle in muestra.detalles)
                             {
-                                var detalleNode = new System.Windows.Forms.TreeNode($"{detalle.tipoDato}: {detalle.valor} {detalle.unidadMedida}");
+                                var detalleNode = new System.Windows.Forms.TreeNode($"{detalle.unidadMedida}: {detalle.valor} {detalle.tipoDato}");
                                 muestraNode.Nodes.Add(detalleNode);
                             }
 
@@ -213,6 +213,7 @@ namespace PPAI2025.Interfaz
             treeAgrupados.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             treeAgrupados.Size = new System.Drawing.Size(this.ClientSize.Width - 10, this.ClientSize.Height - 10);
             this.Size = new System.Drawing.Size(550, 800);
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.ShowDialog();
 
         }
