@@ -67,7 +67,6 @@ namespace PPAI2025.Interfaz
 
             dataGridEventos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridEventos.MultiSelect = false;
-            dataGridEventos.ClearSelection();
 
             datosCargados = true;
 
@@ -95,6 +94,7 @@ namespace PPAI2025.Interfaz
             btnRechazar.Enabled = true;
             btnRevisionExperto.Enabled = true;
             btnVisualizarMapa.Enabled = true;
+            dataGridEventos.Enabled = false;
 
         }
 
@@ -226,6 +226,11 @@ namespace PPAI2025.Interfaz
         private void btnSismograma_Click(object sender, EventArgs e)
         {
             MessageBox.Show("No implementada");
+        }
+
+        private void dataGridEventos_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            dataGridEventos.ClearSelection();
         }
     }
 

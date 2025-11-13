@@ -69,6 +69,7 @@
             this.dataGridEventos.Size = new System.Drawing.Size(721, 289);
             this.dataGridEventos.TabIndex = 0;
             this.dataGridEventos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.tomarSeleccionEvento_CellContentClick);
+            this.dataGridEventos.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dataGridEventos_DataBindingComplete);
             // 
             // FechaOcurrencia
             // 
