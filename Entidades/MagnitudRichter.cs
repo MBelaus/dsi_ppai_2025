@@ -23,12 +23,6 @@ namespace PPAI2025.Entidades
         public MagnitudRichter()
         {
         }
-
-        public bool esAutodetectado()
-        {
-            return this.Numero < 4.0;
-        }
-
         public float getNumero()
         {
             return this.Numero;

@@ -113,6 +113,8 @@
     <Compile Include="Entidades\Sismografo.cs" />
     <Compile Include="Entidades\TipoDeDato.cs" />
     <Compile Include="Entidades\Usuario.cs" />
+    <Compile Include="Interfaces\IIterador.cs" />
+    <Compile Include="Interfaces\IAgregado.cs" />
     <Compile Include="Interfaz\PantInicioSesion.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,6 +127,7 @@
     <Compile Include="Interfaz\PantResultadoRevisionManual.Designer.cs">
       <DependentUpon>PantResultadoRevisionManual.cs</DependentUpon>
     </Compile>
+    <Compile Include="Iteradores\IteradorEventosSismicos.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Interfaz\PantInicioSesion.resx">

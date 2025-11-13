@@ -1,7 +1,9 @@
 ﻿using PPAI2025.AccesoDatos;
 using PPAI2025.DTOs;
 using PPAI2025.Entidades;
+using PPAI2025.Interfaces;
 using PPAI2025.Interfaz;
+using PPAI2025.Iteradores;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +15,7 @@ using System.Windows.Forms;
 
 namespace PPAI2025.Controlador
 {
-    public class GestorResultadoRevisionManual
+    public class GestorResultadoRevisionManual : IAgregado
     {
         private PantResultadoRevisionManual pantalla;
         private List<EventoSismico> listES;
@@ -59,29 +61,49 @@ namespace PPAI2025.Controlador
             this.listSismografos = AD_Sismografo.BuscarTodosSismografos();
         }
 
-        private (List<EventoSismico>, List<CambioEstado> ) buscaEventosAutodetectados()
-        {
-            List<EventoSismico> eventosAutodetectadosNoRevisados = new List<EventoSismico>();
-            List<CambioEstado> ultimosCambiosEstados = new List<CambioEstado>();
-            foreach (EventoSismico evento in listES)    
-            {
-                CambioEstado cambioEstadoNoRevisado = evento.esEventoNoRevisado();
-                if (cambioEstadoNoRevisado != null)
-                {
-                    ultimosCambiosEstados.Add(cambioEstadoNoRevisado);
-                    eventosAutodetectadosNoRevisados.Add(evento);
-                }
-            }
+        //private (List<EventoSismico>, List<CambioEstado> ) buscaEventosAutodetectados()
+        //{
+        //    List<EventoSismico> eventosAutodetectadosNoRevisados = new List<EventoSismico>();
+        //    List<CambioEstado> ultimosCambiosEstados = new List<CambioEstado>();
+        //    foreach (EventoSismico evento in listES)    
+        //    {
+        //        CambioEstado cambioEstadoNoRevisado = evento.esEventoNoRevisado();
+        //        if (cambioEstadoNoRevisado != null)
+        //        {
+        //            ultimosCambiosEstados.Add(cambioEstadoNoRevisado);
+        //            eventosAutodetectadosNoRevisados.Add(evento);
+        //        }
+        //    }
 
-            List<EventoSismico> eventosAutodetectados = new List<EventoSismico>();
-            foreach(EventoSismico evento in eventosAutodetectadosNoRevisados)
-            {
-                eventosAutodetectados.Add(evento.getDatos());
-            }
+        //    List<EventoSismico> eventosAutodetectados = new List<EventoSismico>();
+        //    foreach(EventoSismico evento in eventosAutodetectadosNoRevisados)
+        //    {
+        //        eventosAutodetectados.Add(evento.getDatos());
+        //    }
 
-            //MessageBox.Show("Cantidad de eventos Autodetectados no revisados " + eventosAutodetectadosNoRevisados.Count.ToString());
+        //    //MessageBox.Show("Cantidad de eventos Autodetectados no revisados " + eventosAutodetectadosNoRevisados.Count.ToString());
             
-            return (eventosAutodetectados, ultimosCambiosEstados);
+        //    return (eventosAutodetectados, ultimosCambiosEstados);
+        //}
+        private (List<EventoSismico>, List<CambioEstado>) buscaEventosAutodetectados()
+        {
+            List<EventoSismico> eventosFiltrados = new List<EventoSismico>();
+            List<CambioEstado> ultimosCambiosEstados = new List<CambioEstado>();
+            IIterador iteradorEventosSismicos = crearIterador();
+
+            while (!iteradorEventosSismicos.haFinalizado())
+            {
+
+                EventoSismico eventoSismicoActual = iteradorEventosSismicos.elementoActual();
+                eventosFiltrados.Add(eventoSismicoActual);
+
+                CambioEstado cambioEstadoNoRevisado = eventoSismicoActual.esEventoNoRevisado();
+                ultimosCambiosEstados.Add(cambioEstadoNoRevisado);
+
+                iteradorEventosSismicos.siguiente();
+            }
+
+            return (eventosFiltrados, ultimosCambiosEstados);
         }
 
         public List<EventoSismico> ordenarPorFechaYHoraOcurrencia()
@@ -283,6 +305,11 @@ namespace PPAI2025.Controlador
         {
             MessageBox.Show("FIN CU");
             Application.Exit();
+        }
+
+        public IIterador crearIterador()
+        {
+            return new IteradorEventosSismicos(this.listES);
         }
     }
 }

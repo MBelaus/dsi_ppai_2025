@@ -60,5 +60,10 @@ namespace PPAI2025.Entidades
 
             return estadoAutoDetectado && estadoEsAmbitoEventoSismico;
         }
+
+        public bool fuisteAutodetectado()
+        {
+            return this.esAutoDetectado();
+        }
     }
 }

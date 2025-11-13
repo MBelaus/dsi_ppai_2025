@@ -64,7 +64,7 @@ namespace PPAI2025.Entidades
         public CambioEstado esEventoNoRevisado()
         {
             CambioEstado cambioEstado = this.CambioEstado
-                                            .FirstOrDefault(ce => ce.esAutoDetectado());
+                                            .FirstOrDefault(ce => ce.fuisteAutodetectado());
             if (cambioEstado != null) { 
                 CambioEstado cambioEstadoActual = this.CambioEstado
                                                 .FirstOrDefault(ce => ce.esEstadoActual());
