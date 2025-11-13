@@ -12,7 +12,7 @@ namespace PPAI2025.AccesoDatos
 {
     public class AD_MagnitudSismo
     {
-        public static MagnitudRichter AgregarMagnitud(string numeroMagnitud)
+        public static MagnitudRichter AgregarMagnitud(float numeroMagnitud)
         {
             string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
             SqlConnection cn = new SqlConnection(cadenaConexion);

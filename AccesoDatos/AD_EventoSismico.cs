@@ -49,7 +49,7 @@ namespace PPAI2025.AccesoDatos
                     string nombreClasificacionSismo = Convert.ToString(fila["nombre_clasificacion_sismo"]);
                     nuevoEvento.Clasificacion = ObtenerClasificacionSismo(nombreClasificacionSismo);
 
-                    string numeroMagnitudRichter = fila["numero_magnitud_richter"].ToString();
+                    float numeroMagnitudRichter = Convert.ToSingle(fila["numero_magnitud_richter"]);
                     nuevoEvento.Magnitud = ObtenerMagnitudSismo(numeroMagnitudRichter);
 
                     string nombreOrigenGeneracion = Convert.ToString(fila["nombre_origen_generacion"]);
@@ -87,7 +87,7 @@ namespace PPAI2025.AccesoDatos
             return AD_ClasificacionSismo.AgregarClasificacion(nombreClasificacionSismo);
         }
 
-        private static MagnitudRichter ObtenerMagnitudSismo(string numeroMagnitudRichter)
+        private static MagnitudRichter ObtenerMagnitudSismo(float numeroMagnitudRichter)
         {
             return AD_MagnitudSismo.AgregarMagnitud(numeroMagnitudRichter);
         }
