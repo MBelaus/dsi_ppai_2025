@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -132,7 +133,8 @@ namespace PPAI2025.Controlador
             esBloqRevi = buscarEstadoBloqueadoEnRevision();
             fechaHoraActual = getFechaHoraActual();
             Empleado responsableInspeccion = buscarUsuarioLogueado();
-            actualizarUltimoEstado(esSelec,listCambiosEstados,fechaHoraActual, esBloqRevi, responsableInspeccion);
+            //actualizarUltimoEstado(esSelec,listCambiosEstados,fechaHoraActual, esBloqRevi, responsableInspeccion);
+            actualizarUltimoEstado(esSelec,fechaHoraActual, esBloqRevi, responsableInspeccion);
             buscarDatosSismicosEventoSeleccionado(esSelec);
             habilitarOpcionVisualizarMapa();
             permitirModificacionDatos();
@@ -171,7 +173,7 @@ namespace PPAI2025.Controlador
             esRechazado = buscarEstadoRechazado();
             
             Empleado responsableInspeccion = buscarUsuarioLogueado();
-            actualizarUltimoEstado(esSelec, listCambiosEstados, fechaHoraActual, esRechazado, responsableInspeccion);
+            actualizarUltimoEstado(esSelec, fechaHoraActual, esRechazado, responsableInspeccion);
             //FIN CU
             finCU();
 
@@ -184,7 +186,7 @@ namespace PPAI2025.Controlador
             esConfirmado = buscarEstadoConfirmado();
 
             Empleado responsableInspeccion = buscarUsuarioLogueado();
-            actualizarUltimoEstado(esSelec, listCambiosEstados, fechaHoraActual, esConfirmado, responsableInspeccion);
+            actualizarUltimoEstado(esSelec, fechaHoraActual, esConfirmado, responsableInspeccion);
             finCU();
             
 
@@ -195,7 +197,7 @@ namespace PPAI2025.Controlador
             esRevisionExperto = buscarEstadoRevisionExperto();
 
             Empleado responsableInspeccion = buscarUsuarioLogueado();
-            actualizarUltimoEstado(esSelec, listCambiosEstados, fechaHoraActual, esRevisionExperto, responsableInspeccion);
+            actualizarUltimoEstado(esSelec, fechaHoraActual, esRevisionExperto, responsableInspeccion);
             finCU();
 
         }
@@ -227,15 +229,28 @@ namespace PPAI2025.Controlador
 
         }
         
-        public void actualizarUltimoEstado(EventoSismico eventoSeleccionado,List<CambioEstado> listUltimos, DateTime fechaHoraActual, Estado estadoAsignar, Empleado responsableInspeccion)
+        public void actualizarUltimoEstado(EventoSismico eventoSeleccionado, DateTime fechaHoraActual, Estado estadoAsignar, Empleado responsableInspeccion)
         {
             // MessageBox.Show("Usuario " + usuarioActual.ToString());
             CambioEstado ultimoCEDelEvento = eventoSeleccionado.esEventoNoRevisado();
 
-            if(ultimoCEDelEvento != null)
+            if (ultimoCEDelEvento != null)
                 {
-                    eventoSeleccionado.actualizarUltimoEstado(listUltimos, fechaHoraActual, estadoAsignar, responsableInspeccion);
+                    CambioEstado nuevoCambioEstado = eventoSeleccionado.actualizarUltimoEstado(fechaHoraActual, estadoAsignar, responsableInspeccion);
+                    this.listCambiosEstados.Add(nuevoCambioEstado);
+
+                    AD_CambioEstado.ActualizarCambioEstado(ultimoCEDelEvento.FechaHoraFin, eventoSeleccionado.FechaOcurrencia, eventoSeleccionado.FechaHoraFin, ultimoCEDelEvento.FechaHoraInicio);
                 }
+            else
+            {
+                CambioEstado cambioEstadoDelEvento = eventoSeleccionado.CambioEstado
+                                                .FirstOrDefault(ce => ce.esEstadoActual());
+                CambioEstado nuevoCambioEstado = eventoSeleccionado.actualizarUltimoEstado(fechaHoraActual, estadoAsignar, responsableInspeccion);
+
+                AD_CambioEstado.ActualizarCambioEstado(cambioEstadoDelEvento.FechaHoraFin, eventoSeleccionado.FechaOcurrencia, eventoSeleccionado.FechaHoraFin, cambioEstadoDelEvento.FechaHoraInicio);
+            }
+
+            AD_CambioEstado.InsertarNuevoCambioEstado(eventoSeleccionado.FechaOcurrencia, eventoSeleccionado.FechaHoraFin, fechaHoraActual, estadoAsignar.Ambito, estadoAsignar.Nombre);
 
         }
 

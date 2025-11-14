@@ -92,22 +92,25 @@ namespace PPAI2025.Entidades
         }
 
 
-        public void actualizarUltimoEstado(List<CambioEstado> listUltimos, DateTime fechaHoraActual, Estado estado, Empleado responsableInspeccion)
+        public CambioEstado actualizarUltimoEstado(DateTime fechaHoraActual, Estado estado, Empleado responsableInspeccion)
         {
 
             //MessageBox.Show("Cantidad cambios estado: " + this.CambioEstado.Count.ToString());
-
-            CambioEstado cambioEstadoDelEvento = listUltimos
-                    .FirstOrDefault(ce => this.CambioEstado.Contains(ce));
+            CambioEstado cambioEstadoDelEvento = this.CambioEstado
+                    .FirstOrDefault(ce => ce.esEstadoActual());
+            //CambioEstado cambioEstadoDelEvento = listUltimos
+            //        .FirstOrDefault(ce => this.CambioEstado.Contains(ce));
 
             if (cambioEstadoDelEvento != null)
             {
                 cambioEstadoDelEvento.setFechaHoraFin(fechaHoraActual);
             }
-            crearNuevoCambioEstado(estado,responsableInspeccion);
+            CambioEstado nuevoCambioEstado = crearNuevoCambioEstado(estado,responsableInspeccion);
+
+            return nuevoCambioEstado;
         }
 
-        private void crearNuevoCambioEstado(Estado est, Empleado responsableInspeccion)
+        public CambioEstado crearNuevoCambioEstado(Estado est, Empleado responsableInspeccion)
         {
             CambioEstado nuevoCambio = new CambioEstado
             {
@@ -119,6 +122,7 @@ namespace PPAI2025.Entidades
 
             MessageBox.Show("Nuevo cambio estado: " + nuevoCambio.EstadoActual.Nombre.ToString());
             this.CambioEstado.Add(nuevoCambio);
+            return nuevoCambio;
         }
 
         public (string, string, string) buscarDatosSismo()

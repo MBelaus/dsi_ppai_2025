@@ -68,6 +68,79 @@ namespace PPAI2025.AccesoDatos
 
         }
 
+        public static void ActualizarCambioEstado(DateTime? fechaHoraFin, DateTime fechaHoraOcurrenciaEvento, DateTime fechaHoraFinEvento, DateTime? fechaHoraInicio)
+        {
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "UPDATE cambio_estado SET fecha_hora_fin = @fechaHoraFin " +
+                    "WHERE fecha_hora_ocurrencia_evento = @fechaHoraOcurrenciaEvento " +
+                    "AND fecha_hora_fin_evento = @fechaHoraFinEvento " +
+                    "AND fecha_hora_inicio = @fechaHoraInicio";
+
+                cmd.Parameters.AddWithValue("@fechaHoraFin", fechaHoraFin);
+                cmd.Parameters.AddWithValue("@fechaHoraOcurrenciaEvento", fechaHoraOcurrenciaEvento);
+                cmd.Parameters.AddWithValue("@fechaHoraFinEvento", fechaHoraFinEvento);
+                cmd.Parameters.AddWithValue("@fechaHoraInicio", fechaHoraInicio);
+
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar el cambio de estado: " + ex.Message);
+            }
+            finally
+            {
+                if (cn.State == ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
+        }
+
+        public static void InsertarNuevoCambioEstado(DateTime fechaOcurrenciaEvento, DateTime fechaHoraFinEvento, DateTime fechaHoraInicio, string ambitoEstado, string nombreEstado)
+        {
+            string cadenaConexion = System.Configuration.ConfigurationManager.AppSettings["CadenaBD"];
+            SqlConnection cn = new SqlConnection(cadenaConexion);
+            try
+            {
+                SqlCommand cmd = new SqlCommand();
+                string consulta = "INSERT INTO cambio_estado " +
+                    "VALUES (@fechaHoraInicio, NULL, @ambitoEstado, @nombreEstado, @fechaOcurrenciaEvento, @fechaHoraFinEvento)";
+
+                cmd.Parameters.AddWithValue("@fechaHoraInicio", fechaHoraInicio);
+                cmd.Parameters.AddWithValue("@ambitoEstado", ambitoEstado);
+                cmd.Parameters.AddWithValue("@nombreEstado", nombreEstado);
+                cmd.Parameters.AddWithValue("@fechaOcurrenciaEvento", fechaOcurrenciaEvento);
+                cmd.Parameters.AddWithValue("@fechaHoraFinEvento", fechaHoraFinEvento);
+
+                cmd.CommandText = consulta;
+                cn.Open();
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al insertar el cambio de estado: " + ex.Message);
+            }
+            finally
+            {
+                if (cn.State == ConnectionState.Open)
+                {
+                    cn.Close();
+                }
+            }
+        }
+
         private static Estado ObtenerEstadoSismo(string ambitoEstado, string nombreEstado)
         {
             return AD_Estado.AgregarEstado(ambitoEstado, nombreEstado);
