@@ -90,12 +90,12 @@ namespace PPAI2025.Controlador
         {
             List<EventoSismico> eventosFiltrados = new List<EventoSismico>();
             List<CambioEstado> ultimosCambiosEstados = new List<CambioEstado>();
-            IIterador iteradorEventosSismicos = crearIterador();
+            IIterador iteradorEventosSismicos = crearIterador(this.listES.Cast<object>().ToList());
 
             while (!iteradorEventosSismicos.haFinalizado())
             {
 
-                EventoSismico eventoSismicoActual = iteradorEventosSismicos.elementoActual();
+                EventoSismico eventoSismicoActual = (EventoSismico)iteradorEventosSismicos.elementoActual();
                 eventosFiltrados.Add(eventoSismicoActual);
 
                 CambioEstado cambioEstadoNoRevisado = eventoSismicoActual.esEventoNoRevisado();
@@ -322,9 +322,9 @@ namespace PPAI2025.Controlador
             Application.Exit();
         }
 
-        public IIterador crearIterador()
+        public IIterador crearIterador(List<object> elementos)
         {
-            return new IteradorEventosSismicos(this.listES);
+            return new IteradorEventosSismicos(elementos);
         }
     }
 }

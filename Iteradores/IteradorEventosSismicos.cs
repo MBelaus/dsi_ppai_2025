@@ -13,19 +13,19 @@ namespace PPAI2025.Iteradores
     private int posicion;
     private List<EventoSismico> listaEventosSismicos;
 
-        public IteradorEventosSismicos(List<EventoSismico> listaEventosSismicos)
+        public IteradorEventosSismicos(List<object> listaGenerica)
         {
-            this.listaEventosSismicos = listaEventosSismicos;
+            this.listaEventosSismicos = listaGenerica.OfType<EventoSismico>().ToList();
             primero();
         }
         public bool cumpleFiltro()
         {
-            EventoSismico eventoActual = elementoActual();
+            EventoSismico eventoActual = (EventoSismico)elementoActual();
             CambioEstado cambioEstadoNoRevisado = eventoActual.esEventoNoRevisado();
 
             return cambioEstadoNoRevisado != null;
         }
-        public EventoSismico elementoActual()
+        public object elementoActual()
         {
             return this.listaEventosSismicos[this.posicion];
         }

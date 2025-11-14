@@ -13,6 +13,6 @@ namespace PPAI2025.Interfaces
         void siguiente();
         bool cumpleFiltro();
         bool haFinalizado();
-        EventoSismico elementoActual();
+        object elementoActual();
     }
 }

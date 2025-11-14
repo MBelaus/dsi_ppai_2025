@@ -8,6 +8,6 @@ namespace PPAI2025.Interfaces
 {
     public interface IAgregado
     {
-        IIterador crearIterador();
+        IIterador crearIterador(List<object> elementos);
     }
 }
